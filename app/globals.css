@@ -866,6 +866,15 @@ main {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.portfolio-grid.portfolio-grid--tri {
+  display: flex;
+  grid-template-columns: none;
+}
+
+.portfolio-grid--tri {
+  align-items: stretch;
+}
+
 .portfolio-card {
   background: var(--paper);
   border-radius: 1.6rem;
@@ -893,6 +902,162 @@ main {
   letter-spacing: 0.12em;
   margin: 1.2rem 0 0.65rem;
   text-transform: uppercase;
+}
+
+.portfolio-card--tri {
+  align-items: stretch;
+  appearance: none;
+  background: var(--paper);
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  font: inherit;
+  min-height: 440px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 1rem;
+  position: relative;
+  text-align: left;
+  transition: flex 380ms cubic-bezier(0.32, 0.72, 0.25, 1);
+}
+
+.portfolio-card--tri.is-expanded {
+  flex: 2 1 0;
+}
+
+.portfolio-card--tri:hover {
+  transform: translateY(-3px);
+}
+
+.portfolio-card--tri:nth-child(even):hover {
+  transform: translateY(-3px);
+}
+
+.portfolio-card--tri:focus-visible {
+  outline: 2px solid var(--sky);
+  outline-offset: 3px;
+  z-index: 1;
+}
+
+.portfolio-card__tri-video {
+  background-color: color-mix(in srgb, var(--paper-deep) 40%, var(--paper));
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 360ms ease;
+  width: 100%;
+  z-index: 0;
+}
+
+.portfolio-card--tri.is-expanded .portfolio-card__tri-video {
+  opacity: 1;
+}
+
+.portfolio-card__tri-scrim {
+  background: linear-gradient(
+    180deg,
+    rgb(25 23 21 / 8%) 0%,
+    rgb(25 23 21 / 62%) 100%
+  );
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 360ms ease;
+  z-index: 1;
+}
+
+.portfolio-card--tri.is-expanded .portfolio-card__tri-scrim {
+  opacity: 1;
+}
+
+.portfolio-card__tri-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.55rem;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
+}
+
+.portfolio-card__tri-eyebrow {
+  color: var(--coral);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.portfolio-card--tri.is-expanded .portfolio-card__tri-eyebrow {
+  color: color-mix(in srgb, var(--sun) 88%, white);
+}
+
+.portfolio-card__tri-title {
+  display: block;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.portfolio-card--tri.is-expanded .portfolio-card__tri-title {
+  color: var(--paper);
+  text-shadow: 0 1px 18px rgb(0 0 0 / 45%);
+}
+
+.portfolio-card__tri-blurb {
+  color: var(--muted);
+  display: block;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 36ch;
+}
+
+.portfolio-card--tri.is-expanded .portfolio-card__tri-blurb {
+  color: color-mix(in srgb, var(--paper) 86%, transparent);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 35%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-card--tri {
+    transition: none;
+  }
+
+  .portfolio-card__tri-video,
+  .portfolio-card__tri-scrim {
+    transition: none;
+  }
+
+  .portfolio-card--tri .portfolio-card__tri-video {
+    opacity: 0 !important;
+  }
+
+  .portfolio-card--tri.is-expanded .portfolio-card__tri-scrim {
+    opacity: 0;
+  }
+
+  .portfolio-card--tri.is-expanded .portfolio-card__tri-eyebrow {
+    color: var(--coral);
+  }
+
+  .portfolio-card--tri.is-expanded .portfolio-card__tri-title {
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .portfolio-card--tri.is-expanded .portfolio-card__tri-blurb {
+    color: var(--muted);
+    text-shadow: none;
+  }
 }
 
 .skills-section {
@@ -1066,8 +1231,17 @@ main {
   }
 
   .identity-grid,
-  .portfolio-grid {
+  .portfolio-grid:not(.portfolio-grid--tri) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .portfolio-grid.portfolio-grid--tri {
+    flex-direction: column;
+  }
+
+  .portfolio-card--tri,
+  .portfolio-card--tri.is-expanded {
+    flex: 1 1 auto;
   }
 
   .filter-bar {
@@ -1091,7 +1265,7 @@ main {
 
   .identity-grid,
   .timeline,
-  .portfolio-grid,
+  .portfolio-grid:not(.portfolio-grid--tri),
   .profile-card__stats {
     grid-template-columns: 1fr;
   }

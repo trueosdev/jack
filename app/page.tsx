@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { BrandIdentitiesCarousel } from "./components/BrandIdentitiesCarousel";
+import { PortfolioTriGrid } from "./components/PortfolioTriGrid";
 import { EducationHalftoneCard } from "./components/EducationHalftoneCard";
 import { HeroNameLetters } from "./components/HeroNameLetters";
 import { PortraitReveal } from "./components/PortraitReveal";
@@ -105,29 +106,6 @@ const experiences: Experience[] = [
 ];
 
 const categories = ["All", "Operations", "Creative", "Ministry", "Hospitality"] as const;
-
-const portfolioSlots = [
-  {
-    title: "Brand Identity Lab",
-    eyebrow: "Logo, banners, signage",
-    prompt: "[brand work]",
-  },
-  {
-    title: "Tokyo Community Events",
-    eyebrow: "Photos, flyers, stories",
-    prompt: "[mission trip photos and event recaps]",
-  },
-  {
-    title: "Worship Set Builder",
-    eyebrow: "Music, A/V, planning",
-    prompt: "[videos, setlists, or planning screenshots]",
-  },
-  {
-    title: "Workflow Command Center",
-    eyebrow: "Operations systems",
-    prompt: "[inventory tools, dashboards, or process improvements]",
-  },
-];
 
 const skills: { label: string; category: ExperienceCategory }[] = [
   { label: "Graphic design", category: "Creative" },
@@ -295,18 +273,7 @@ export default function Home() {
         <BrandIdentitiesCarousel />
 
         <section className="section-shell" aria-label="Portfolio highlights">
-          <div className="portfolio-grid">
-            {portfolioSlots.map((slot) => (
-              <article className="portfolio-card" key={slot.title}>
-                <div className="media-placeholder">
-                  <span>Image / component slot</span>
-                </div>
-                <p>{slot.eyebrow}</p>
-                <h3>{slot.title}</h3>
-                <span>{slot.prompt}</span>
-              </article>
-            ))}
-          </div>
+          <PortfolioTriGrid />
         </section>
       </div>
 
