@@ -94,7 +94,7 @@ export function BrandIdentitiesCarousel({ slides }: Props) {
       style={sectionStyle}
     >
       <header className="brand-identities__header">
-        <p className="kicker">Brand identities</p>
+        <p className="kicker">Brand identities I've Designed</p>
       </header>
 
       <div

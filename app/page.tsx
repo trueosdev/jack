@@ -110,22 +110,22 @@ const portfolioSlots = [
   {
     title: "Brand Identity Lab",
     eyebrow: "Logo, banners, signage",
-    prompt: "Drop in AMP or cafe brand work here.",
+    prompt: "[brand work]",
   },
   {
     title: "Tokyo Community Events",
     eyebrow: "Photos, flyers, stories",
-    prompt: "Use this space for mission trip photos and event recaps.",
+    prompt: "[mission trip photos and event recaps]",
   },
   {
     title: "Worship Set Builder",
     eyebrow: "Music, A/V, planning",
-    prompt: "Add videos, setlists, or planning screenshots.",
+    prompt: "[videos, setlists, or planning screenshots]",
   },
   {
     title: "Workflow Command Center",
     eyebrow: "Operations systems",
-    prompt: "Show inventory tools, dashboards, or process improvements.",
+    prompt: "[inventory tools, dashboards, or process improvements]",
   },
 ];
 
