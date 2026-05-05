@@ -23,13 +23,22 @@
  *   `-profile:v high -preset slow -movflags +faststart portfolio-worship-leader.mp4`
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 
 type PortfolioLane = {
   readonly id: string;
   readonly title: string;
   readonly eyebrow: string;
   readonly blurb: string;
+  /** Hover wash: moss / sun / sky */
+  readonly accent: "moss" | "sun" | "sky";
   /** H.264 — required baseline for Safari + older engines */
   readonly videoMp4: string;
   /** VP9 — optional smaller files (Chrome/Firefox); omit until encoded */
@@ -42,20 +51,23 @@ const LANES: readonly PortfolioLane[] = [
     title: "Worship Leader",
     eyebrow: "MINISTRY · MUSIC · A/V",
     blurb: "Planning services, directing bands, and building moments people remember.",
+    accent: "moss",
     videoMp4: "/portfolio-worship-leader.mp4",
   },
   {
     id: "workflow-toolsmith",
     title: "Workflow Toolsmith",
-    eyebrow: "OPERATIONS · SYSTEMS",
+    eyebrow: "OPERATIONS · SYSTEMS · WEB",
     blurb: "Tightening inventory, shipping, schedules, and the tools teams live in daily.",
+    accent: "sun",
     videoMp4: "/portfolio-workflow.mp4",
   },
   {
     id: "story-brander",
     title: "Story Brander",
-    eyebrow: "IDENTITY · VISUALS",
+    eyebrow: "IDENTITY · VISUALS · BRANDING",
     blurb: "Logos, campaigns, and surfaces that tell a clear story at a glance.",
+    accent: "sky",
     videoMp4: "/portfolio-story-brander.mp4",
   },
 ];
@@ -63,7 +75,19 @@ const LANES: readonly PortfolioLane[] = [
 export function PortfolioTriGrid() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [followTip, setFollowTip] = useState<{ readonly x: number; readonly y: number } | null>(
+    null,
+  );
+  const [mounted, setMounted] = useState(false);
   const videosRef = useRef<Map<string, HTMLVideoElement>>(new Map());
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    setFollowTip(null);
+  }, [expandedId]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -92,13 +116,26 @@ export function PortfolioTriGrid() {
     setExpandedId((prev) => (prev === id ? null : id));
   }, []);
 
+  const moveFollowTip = useCallback(
+    (e: MouseEvent<HTMLButtonElement>, laneExpanded: boolean) => {
+      if (prefersReducedMotion || laneExpanded) {
+        setFollowTip(null);
+        return;
+      }
+      setFollowTip({ x: e.clientX, y: e.clientY });
+    },
+    [prefersReducedMotion],
+  );
+
   return (
-    <div className="portfolio-grid portfolio-grid--tri">
-      {LANES.map((lane) => {
+    <>
+      <div className="portfolio-grid portfolio-grid--tri">
+        {LANES.map((lane) => {
         const expanded = expandedId === lane.id;
         return (
           <button
             aria-expanded={expanded}
+            data-accent={lane.accent}
             className={[
               "portfolio-card",
               "portfolio-card--tri",
@@ -108,6 +145,9 @@ export function PortfolioTriGrid() {
               .join(" ")}
             key={lane.id}
             type="button"
+            onMouseEnter={(e) => moveFollowTip(e, expanded)}
+            onMouseLeave={() => setFollowTip(null)}
+            onMouseMove={(e) => moveFollowTip(e, expanded)}
             onClick={() => activate(lane.id)}
           >
             {/* Decorative loop — no audible speech track */}
@@ -141,6 +181,21 @@ export function PortfolioTriGrid() {
           </button>
         );
       })}
-    </div>
+      </div>
+
+      {mounted &&
+        followTip !== null &&
+        !prefersReducedMotion &&
+        createPortal(
+          <span
+            aria-hidden
+            className="portfolio-tri-follow-tooltip"
+            style={{ left: followTip.x, top: followTip.y }}
+          >
+            Click me!
+          </span>,
+          document.body,
+        )}
+    </>
   );
 }
