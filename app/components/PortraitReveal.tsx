@@ -10,9 +10,9 @@ const JACK_RESET_IDLE_MS = 750;
 /** Dab centers recorded for rewind; oldest dropped when exceeded. */
 const MAX_HEAL_HISTORY = 4500;
 /** Canvas-space radius that covers one brush dab for healing (device pixels). */
-const HEAL_RADIUS = 120;
+const HEAL_RADIUS = 70;
 /** How many dab sites to restore per animation frame. */
-const HEAL_BATCH_PER_FRAME = 20;
+const HEAL_BATCH_PER_FRAME = 5;
 
 /**
  * Same geometry as CSS `object-fit: cover` + `object-position` (percentage pair).
@@ -74,7 +74,7 @@ function dabPaintbrush(ctx: CanvasRenderingContext2D, px: number, py: number) {
   for (const [ox, oy, scale] of bristles) {
     const x = px + ox;
     const y = py + oy;
-    const radius = (100 + Math.random() * 10) * scale;
+    const radius = (45 + Math.random() * 10) * scale;
 
     const g = ctx.createRadialGradient(x, y, radius * 0.05, x, y, radius);
     g.addColorStop(0, "rgba(0, 0, 0, 0.92)");
