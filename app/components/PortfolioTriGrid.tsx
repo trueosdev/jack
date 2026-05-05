@@ -72,9 +72,13 @@ const LANES: readonly PortfolioLane[] = [
   },
 ];
 
+/** Same max width as portfolio tri column rules in `globals.css`. */
+const MOBILE_PORTFOLIO_MQ = `(max-width: ${980}px)`;
+
 export function PortfolioTriGrid() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMobilePortfolioView, setIsMobilePortfolioView] = useState(false);
   const [followTip, setFollowTip] = useState<{ readonly x: number; readonly y: number } | null>(
     null,
   );
@@ -98,9 +102,21 @@ export function PortfolioTriGrid() {
   }, []);
 
   useEffect(() => {
+    const mq = window.matchMedia(MOBILE_PORTFOLIO_MQ);
+    const apply = () => setIsMobilePortfolioView(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
     videosRef.current.forEach((el, id) => {
       if (prefersReducedMotion) {
         el.pause();
+        return;
+      }
+      if (isMobilePortfolioView) {
+        void el.play().catch(() => {});
         return;
       }
       if (id === expandedId) {
@@ -110,7 +126,7 @@ export function PortfolioTriGrid() {
         el.currentTime = 0;
       }
     });
-  }, [expandedId, prefersReducedMotion]);
+  }, [expandedId, prefersReducedMotion, isMobilePortfolioView]);
 
   const activate = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -118,13 +134,13 @@ export function PortfolioTriGrid() {
 
   const moveFollowTip = useCallback(
     (e: MouseEvent<HTMLButtonElement>, laneExpanded: boolean) => {
-      if (prefersReducedMotion || laneExpanded) {
+      if (prefersReducedMotion || laneExpanded || isMobilePortfolioView) {
         setFollowTip(null);
         return;
       }
       setFollowTip({ x: e.clientX, y: e.clientY });
     },
-    [prefersReducedMotion],
+    [prefersReducedMotion, isMobilePortfolioView],
   );
 
   return (
@@ -132,9 +148,11 @@ export function PortfolioTriGrid() {
       <div className="portfolio-grid portfolio-grid--tri">
         {LANES.map((lane) => {
         const expanded = expandedId === lane.id;
+        const videoActive =
+          (!prefersReducedMotion && isMobilePortfolioView) || expanded;
         return (
           <button
-            aria-expanded={expanded}
+            aria-expanded={videoActive}
             data-accent={lane.accent}
             className={[
               "portfolio-card",
@@ -145,9 +163,9 @@ export function PortfolioTriGrid() {
               .join(" ")}
             key={lane.id}
             type="button"
-            onMouseEnter={(e) => moveFollowTip(e, expanded)}
+            onMouseEnter={(e) => moveFollowTip(e, videoActive)}
             onMouseLeave={() => setFollowTip(null)}
-            onMouseMove={(e) => moveFollowTip(e, expanded)}
+            onMouseMove={(e) => moveFollowTip(e, videoActive)}
             onClick={() => activate(lane.id)}
           >
             {/* Decorative loop — no audible speech track */}
@@ -158,7 +176,9 @@ export function PortfolioTriGrid() {
               loop
               muted
               playsInline
-              preload="none"
+              preload={
+                !prefersReducedMotion && isMobilePortfolioView ? "metadata" : "none"
+              }
               ref={(el) => {
                 if (el) {
                   videosRef.current.set(lane.id, el);
@@ -186,6 +206,7 @@ export function PortfolioTriGrid() {
       {mounted &&
         followTip !== null &&
         !prefersReducedMotion &&
+        !isMobilePortfolioView &&
         createPortal(
           <span
             aria-hidden

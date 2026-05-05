@@ -27,8 +27,8 @@ const experiences: Experience[] = [
     dates: "Jan 2026 - Present",
     category: "Operations",
     details: [
-      "Oversee daily operations and managerial problem solving for a safety products company.",
-      "Manage stocking, shipping, inventory software development, and workflow optimization.",
+      "Oversee <b>daily operations and managerial problem solving</b> for a safety products company.",
+      "Manage <b>stocking, shipping, inventory software development</b>, and <b>workflow optimization</b>.",
     ],
   },
   {
@@ -38,9 +38,9 @@ const experiences: Experience[] = [
     dates: "Oct 2024 - Present",
     category: "Creative",
     details: [
-      "Lead marketing initiatives including advertisements, signage, banners, and logo creation.",
-      "Manage the executive calendar and time management for the company CEO.",
-      "Produce graphic materials that reinforce brand identity across platforms.",
+      "Lead marketing initiatives including <b>advertisements, signage, banners, and logo creation</b>.",
+      "Manage the <b>executive calendar and time management</b> for the company CEO.",
+      "Produce graphic materials that reinforce <b>brand identity across platforms</b>.",
     ],
   },
   {
@@ -50,9 +50,9 @@ const experiences: Experience[] = [
     dates: "Aug 2023 - Sep 2024",
     category: "Ministry",
     details: [
-      "Organized and performed art and worship events throughout Tokyo.",
-      "Assisted in the management of church worship services.",
-      "Hosted multicultural networking events designed to bridge national communities.",
+      "Organized and performed <b>art and worship events</b> throughout Tokyo.",
+      "Assisted in the management of <b>church worship services</b>.",
+      "Hosted <b>multicultural networking events</b> designed to bridge national communities.",
       "Studied Japanese through immersive language coursework.",
     ],
   },
@@ -63,10 +63,10 @@ const experiences: Experience[] = [
     dates: "Aug 2023 - Jun 2024",
     category: "Ministry",
     details: [
-      "Planned and led weekly worship practices and Sunday services.",
-      "Managed all audio/visual hardware and software for the sanctuary.",
+      "Planned and led <b>weekly worship practices and Sunday services</b>.",
+      "Managed all <b>audio/visual hardware and software</b> for the sanctuary.",
       "Provided spiritual and theological mentorship to youth groups.",
-      "Designed and maintained the church website.",
+      "<b>Designed and maintained</b> the church website.",
     ],
   },
   {
@@ -76,8 +76,8 @@ const experiences: Experience[] = [
     dates: "Oct 2022 - Jun 2024",
     category: "Hospitality",
     details: [
-      "Managed cafe operations including equipment, staffing, and customer experience.",
-      "Designed branded stickers and decals to promote cafe identity.",
+      "Managed <b>cafe operations</b> including equipment, staffing, and customer experience.",
+      "Designed <b>branded stickers and decals</b> to promote cafe identity.",
       "Handled cash transactions, customer relations, and team training.",
     ],
   },
@@ -90,17 +90,7 @@ const experiences: Experience[] = [
     details: [
       "Developed leadership, musicianship, theological, and technical skills for worship ministry.",
       "Wrote original songs, studied worship literature, and led a live worship band.",
-    ],
-  },
-  {
-    role: "Office Intern",
-    company: "TMS Huntsville - Dr. Hayden",
-    location: "Huntsville, AL",
-    dates: "Summer 2021",
-    category: "Operations",
-    details: [
-      "Managed phone intake, appointment scheduling, and patient assistance.",
-      "Participated alongside clinical staff in TMS therapy sessions.",
+      "Left with a <b>Certificate of Worship Leadership</b> from <b>Birmingham Theological Seminary</b>.",
     ],
   },
 ];
@@ -252,8 +242,11 @@ export default function Home() {
                 {experience.company} / {experience.location}
               </p>
               <ul>
-                {experience.details.map((detail) => (
-                  <li key={detail}>{detail}</li>
+                {experience.details.map((detail, detailIndex) => (
+                  <li
+                    key={`${experience.role}-${experience.company}-${detailIndex}`}
+                    dangerouslySetInnerHTML={{ __html: detail }}
+                  />
                 ))}
               </ul>
             </article>

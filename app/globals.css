@@ -1314,6 +1314,30 @@ main {
     flex: 1 1 auto;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .portfolio-card--tri .portfolio-card__tri-video {
+      opacity: 1;
+    }
+
+    .portfolio-card--tri .portfolio-card__tri-scrim {
+      opacity: 1;
+    }
+
+    .portfolio-card--tri .portfolio-card__tri-eyebrow {
+      color: color-mix(in srgb, var(--sun) 88%, white);
+    }
+
+    .portfolio-card--tri .portfolio-card__tri-title {
+      color: var(--paper);
+      text-shadow: 0 1px 18px rgb(0 0 0 / 45%);
+    }
+
+    .portfolio-card--tri .portfolio-card__tri-blurb {
+      color: color-mix(in srgb, var(--paper) 86%, transparent);
+      text-shadow: 0 1px 12px rgb(0 0 0 / 35%);
+    }
+  }
+
   .filter-bar {
     justify-content: flex-start;
   }
