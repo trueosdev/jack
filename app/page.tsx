@@ -27,8 +27,9 @@ const experiences: Experience[] = [
     dates: "Jan 2026 - Present",
     category: "Operations",
     details: [
-      "Oversee <b>daily operations and managerial problem solving</b> for a safety products company.",
-      "Manage <b>stocking, shipping, inventory software development</b>, and <b>workflow optimization</b>.",
+      "Overseeing <b>daily operations and managerial problem solving</b> for a safety products company.",
+      "Managing <b>stocking, shipping, developing inventory software, and optimizing workflow</b>.",
+      "<b>Country-wide marketing outreach</b> for new product launches and sales events.",
     ],
   },
   {
@@ -38,9 +39,9 @@ const experiences: Experience[] = [
     dates: "Oct 2024 - Present",
     category: "Creative",
     details: [
-      "Lead marketing initiatives including <b>advertisements, signage, banners, and logo creation</b>.",
-      "Manage the <b>executive calendar and time management</b> for the company CEO.",
-      "Produce graphic materials that reinforce <b>brand identity across platforms</b>.",
+      "Leading marketing initiatives including <b>advertisements, signage, banners, and logo creation</b>.",
+      "Managing the <b>executive calendar and time management</b> for the company CEO.",
+      "Producing graphic materials that reinforce <b>brand identity across platforms</b>.",
     ],
   },
   {
@@ -66,7 +67,7 @@ const experiences: Experience[] = [
       "Planned and led <b>weekly worship practices and Sunday services</b>.",
       "Managed all <b>audio/visual hardware and software</b> for the sanctuary.",
       "Provided spiritual and theological mentorship to youth groups.",
-      "<b>Designed and maintained</b> the church website.",
+      "Designed and maintained the church website.",
     ],
   },
   {
@@ -76,9 +77,9 @@ const experiences: Experience[] = [
     dates: "Oct 2022 - Jun 2024",
     category: "Hospitality",
     details: [
-      "Managed <b>cafe operations</b> including equipment, staffing, and customer experience.",
-      "Designed <b>branded stickers and decals</b> to promote cafe identity.",
-      "Handled cash transactions, customer relations, and team training.",
+      "Managed <b>cafe operations</b> including equipment, staffing, and customer experience.</b>.",
+      "Designed <b>branded stickers and decals</b> to promote cafe identity.</b>.",
+      "Handled cash transactions, customer relations, and team training.</b>.",
     ],
   },
   {
