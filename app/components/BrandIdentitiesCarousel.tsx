@@ -11,30 +11,58 @@ import {
 
 const ACCENTS = ["#FFC000", "#5aa0e6", "#74AB86", "#ff765f"] as const;
 
-/** Default logos: rendered with `background-color: var(--paper)` + SVG luminance mask. */
-const BRAND_LOGO_ENTRIES: readonly { readonly alt: string; readonly src: string }[] =
-  [
-    { alt: "Broken Bean Coffee Roasters", src: "/brokenBean.svg" },
-    { alt: "Grace Life Church Decatur", src: "/gracelife.svg" },
-    { alt: "So You Sew Embroidery", src: "/SoYouSew.svg" },
-    { alt: "True Chats", src: "/trueChatsLogo.svg" },
-    { alt: "Mock", src: "/mock.svg" },
-    { alt: "Native", src: "/native.svg" },
-  ];
+/** Default logos: rendered with `background-color: var(--paper)` + SVG alpha mask. */
+const BRAND_LOGO_ENTRIES: readonly {
+  readonly alt: string;
+  readonly href?: string;
+  readonly src: string;
+}[] = [
+  { alt: "Broken Bean Coffee Roasters", src: "/brokenBean.svg" },
+  { alt: "Grace Life Church Decatur", href: "https://www.gracelifedecatur.org/", src: "/gracelife.svg" },
+  { alt: "So You Sew Embroidery", src: "/SoYouSew.svg" },
+  { alt: "True Chats", src: "/trueChatsLogo.svg" },
+  { alt: "Mock", src: "/mock.svg" },
+  { alt: "Native", src: "/native.svg" },
+];
 
-function BrandLogoPaperMark({ alt, src }: { alt: string; src: string }) {
-  return (
+function BrandLogoPaperMark({
+  alt,
+  href,
+  src,
+}: {
+  alt: string;
+  href?: string;
+  src: string;
+}) {
+  const maskStyle = {
+    "--logo-mask": `url("${src}")`,
+  } as CSSProperties;
+
+  const mark = (
     <div
-      aria-label={alt}
+      aria-hidden={Boolean(href)}
+      aria-label={href ? undefined : alt}
       className="brand-identities__logo-masked"
-      role="img"
-      style={
-        {
-          "--logo-mask": `url("${src}")`,
-        } as CSSProperties
-      }
+      role={href ? undefined : "img"}
+      style={maskStyle}
     />
   );
+
+  if (href) {
+    return (
+      <a
+        aria-label={`${alt} — opens in a new tab`}
+        className="brand-identities__logo-link"
+        href={href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {mark}
+      </a>
+    );
+  }
+
+  return mark;
 }
 
 type Props = {
@@ -49,8 +77,8 @@ export function BrandIdentitiesCarousel({ slides }: Props) {
   const items: ReactNode[] =
     slides && slides.length > 0
       ? [...slides]
-      : BRAND_LOGO_ENTRIES.map(({ alt, src }) => (
-          <BrandLogoPaperMark alt={alt} key={src} src={src} />
+      : BRAND_LOGO_ENTRIES.map(({ alt, href, src }) => (
+          <BrandLogoPaperMark alt={alt} href={href} key={src} src={src} />
         ));
 
   const count = Math.max(items.length, 1);

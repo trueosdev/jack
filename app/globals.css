@@ -750,6 +750,21 @@ main {
   width: min(94%, 20rem);
 }
 
+.brand-identities__logo-link {
+  align-self: center;
+  display: block;
+  justify-self: center;
+  line-height: 0;
+  max-width: 100%;
+  text-decoration: none;
+}
+
+.brand-identities__logo-link:focus-visible {
+  border-radius: 0.35rem;
+  outline: 2px solid var(--brand-identities-accent, var(--sun));
+  outline-offset: 4px;
+}
+
 .brand-identities__logo-masked {
   align-self: center;
   background-color: var(--paper);
@@ -1086,6 +1101,19 @@ main {
   line-height: 1.55;
   margin: 0;
   max-width: 36ch;
+}
+
+.portfolio-card__tri-blurb-link {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.18em;
+}
+
+.portfolio-card__tri-blurb-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 .portfolio-card--tri.is-expanded .portfolio-card__tri-blurb {

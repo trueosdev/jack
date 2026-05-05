@@ -24,7 +24,9 @@
  */
 
 import {
+  type KeyboardEvent,
   type MouseEvent,
+  type ReactNode,
   useCallback,
   useEffect,
   useRef,
@@ -36,7 +38,7 @@ type PortfolioLane = {
   readonly id: string;
   readonly title: string;
   readonly eyebrow: string;
-  readonly blurb: string;
+  readonly blurb: ReactNode;
   /** Hover wash: moss / sun / sky */
   readonly accent: "moss" | "sun" | "sky";
   /** H.264 — required baseline for Safari + older engines */
@@ -50,7 +52,21 @@ const LANES: readonly PortfolioLane[] = [
     id: "worship-leader",
     title: "Worship Leader",
     eyebrow: "MINISTRY · MUSIC · A/V",
-    blurb: "Planning services, directing bands, and building moments people remember.",
+    blurb: (
+      <>
+        Current worship leader of{" "}
+        <a
+          className="portfolio-card__tri-blurb-link"
+          href="https://www.gracelifedecatur.org"
+          rel="noopener noreferrer"
+          target="_blank"
+          onClick={(e) => e.stopPropagation()}
+        >
+          GraceLife Church
+        </a>
+        . Planning services, directing bands, and building moments people remember.
+      </>
+    ),
     accent: "moss",
     videoMp4: "/portfolio-worship-leader.mp4",
   },
@@ -133,7 +149,7 @@ export function PortfolioTriGrid() {
   }, []);
 
   const moveFollowTip = useCallback(
-    (e: MouseEvent<HTMLButtonElement>, laneExpanded: boolean) => {
+    (e: MouseEvent<HTMLDivElement>, laneExpanded: boolean) => {
       if (prefersReducedMotion || laneExpanded || isMobilePortfolioView) {
         setFollowTip(null);
         return;
@@ -151,9 +167,8 @@ export function PortfolioTriGrid() {
         const videoActive =
           (!prefersReducedMotion && isMobilePortfolioView) || expanded;
         return (
-          <button
+          <div
             aria-expanded={videoActive}
-            data-accent={lane.accent}
             className={[
               "portfolio-card",
               "portfolio-card--tri",
@@ -161,12 +176,20 @@ export function PortfolioTriGrid() {
             ]
               .filter(Boolean)
               .join(" ")}
+            data-accent={lane.accent}
             key={lane.id}
-            type="button"
+            role="button"
+            tabIndex={0}
+            onClick={() => activate(lane.id)}
+            onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                activate(lane.id);
+              }
+            }}
             onMouseEnter={(e) => moveFollowTip(e, videoActive)}
             onMouseLeave={() => setFollowTip(null)}
             onMouseMove={(e) => moveFollowTip(e, videoActive)}
-            onClick={() => activate(lane.id)}
           >
             {/* Decorative loop — no audible speech track */}
             <video
@@ -198,7 +221,7 @@ export function PortfolioTriGrid() {
               <h3 className="portfolio-card__tri-title">{lane.title}</h3>
               <span className="portfolio-card__tri-blurb">{lane.blurb}</span>
             </span>
-          </button>
+          </div>
         );
       })}
       </div>
