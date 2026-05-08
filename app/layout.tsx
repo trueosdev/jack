@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jack Lyons builds bridges between people, process, & purpose.",
+    title: "Jack Lyons - Interactive Portfolio",
     description:
       "Creative Director, Worship Leader, and Organizational Manager with a background spanning operations, ministry, brand design, and international missions.",
     images: ["/thumbnail.png"],
