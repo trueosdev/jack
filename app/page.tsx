@@ -160,16 +160,6 @@ export default function Home() {
 
         <aside className="profile-card" aria-label="Profile highlights">
           <PortraitReveal />
-          <div className="profile-card__stats">
-            <div>
-              <strong>Tokyo 東京</strong>
-              <span>Mission Field</span>
-            </div>
-            <div>
-              <strong>B.S.</strong>
-              <span>Industrial & Organizational Psychology</span>
-            </div>
-          </div>
         </aside>
       </section>
 

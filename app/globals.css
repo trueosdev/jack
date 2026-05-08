@@ -7,7 +7,7 @@
   --sky: #5aa0e6;
   --moss: #74AB86;
   --coral: #ff765f;
-  --shadow: 0 28px 80px rgba(53, 37, 61, 0.16);
+  --shadow: 0 28px 80px rgba(53, 37, 61, 0.10);
 }
 
 * {
@@ -195,12 +195,8 @@ main {
   min-height: calc(100vh - 2rem);
 }
 
-.hero__copy,
-.profile-card,
 .identity-card,
-.split-section,
 .timeline-card,
-.brand-identities,
 .portfolio-card,
 .skills-section,
 .education-contact article {
@@ -209,7 +205,7 @@ main {
 }
 
 .hero__copy {
-  background: #fff7e9d1;
+  background: transparent;
   border-radius: 2.4rem;
   display: flex;
   flex-direction: column;
@@ -381,47 +377,6 @@ main {
   padding: 0.75rem 1rem;
 }
 
-.profile-card__stats {
-  background: linear-gradient(
-    to top,
-    rgba(25, 23, 21, 0.55) 0%,
-    rgba(25, 23, 21, 0.18) 55%,
-    transparent 100%
-  );
-  bottom: 0;
-  box-sizing: border-box;
-  color: var(--paper);
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(3, 1fr);
-  left: 0;
-  padding: 4.5rem 1rem 1rem;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  z-index: 4;
-}
-
-.profile-card__stats div {
-  background: color-mix(in srgb, var(--paper) 20%, transparent);
-  border-radius: 1.2rem;
-  padding: 1rem;
-}
-
-.profile-card__stats strong,
-.profile-card__stats span {
-  display: block;
-}
-
-.profile-card__stats strong {
-  font-size: 1.3rem;
-}
-
-.profile-card__stats span {
-  font-size: 0.78rem;
-  margin-top: 0.25rem;
-}
-
 .identity-grid {
   display: grid;
   gap: 1rem;
@@ -467,7 +422,7 @@ main {
 
 .split-section {
   align-items: center;
-  background: var(--paper);
+  background: transparent;
   border-radius: 2rem;
   display: grid;
   gap: 2rem;
@@ -1433,8 +1388,7 @@ main {
 
   .identity-grid,
   .timeline,
-  .portfolio-grid:not(.portfolio-grid--tri),
-  .profile-card__stats {
+  .portfolio-grid:not(.portfolio-grid--tri) {
     grid-template-columns: 1fr;
   }
 
