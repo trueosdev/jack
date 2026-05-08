@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://www.jacklyons.us",
     siteName: "Jack Lyons",
-    title: "Jack Lyons builds bridges between people, process, & purpose.",
+    title: "Jack Lyons - Interactive Portfolio",
     description:
       "Creative Director, Worship Leader, and Organizational Manager with a background spanning operations, ministry, brand design, and international missions.",
     images: [
