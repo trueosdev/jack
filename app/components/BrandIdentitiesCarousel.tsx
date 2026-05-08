@@ -28,20 +28,20 @@ const BRAND_LOGO_ENTRIES: readonly {
     href: "https://www.gracelifedecatur.org/",
     src: "/gracelife.svg",
     renderAsImage: true,
-    tooltipText: "I made this site!",
+    tooltipText: "i made this site, too :)",
   },
   { alt: "So You Sew Embroidery", src: "/SoYouSew.svg" },
   {
     alt: "True Chats",
     href: "https://chats.trueos.dev",
     src: "/trueChatsLogo.svg",
-    tooltipText: "I made this site!",
+    tooltipText: "i made this site, too :)",
   },
   {
     alt: "Mock",
     href: "https://mockitsolutions.com",
     src: "/mock.svg",
-    tooltipText: "I made this site!",
+    tooltipText: "i made this site, too :)",
   },
   { alt: "Native", src: "/native.svg" },
 ];
