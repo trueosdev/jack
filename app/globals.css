@@ -785,8 +785,27 @@ main {
   -webkit-mask-size: contain;
 }
 
+.brand-identities__logo-image {
+  align-self: center;
+  display: block;
+  height: clamp(96px, 19vmin, 196px);
+  justify-self: center;
+  margin-inline: auto;
+  max-width: 70%;
+  object-fit: contain;
+  object-position: center;
+  /* Match the paper-colored masked logos for visual consistency. */
+  filter: brightness(0) saturate(100%) invert(95%) sepia(35%) saturate(402%) hue-rotate(312deg)
+    brightness(106%) contrast(105%);
+  width: min(100%, 520px);
+}
+
 @supports (width: 1cqi) {
   .brand-identities__logo-masked {
+    width: min(100%, max(520px, 76cqi));
+  }
+
+  .brand-identities__logo-image {
     width: min(100%, max(520px, 76cqi));
   }
 }

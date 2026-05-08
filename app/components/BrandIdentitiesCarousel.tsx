@@ -16,9 +16,15 @@ const BRAND_LOGO_ENTRIES: readonly {
   readonly alt: string;
   readonly href?: string;
   readonly src: string;
+  readonly renderAsImage?: boolean;
 }[] = [
   { alt: "Broken Bean Coffee Roasters", src: "/brokenBean.svg" },
-  { alt: "Grace Life Church Decatur", href: "https://www.gracelifedecatur.org/", src: "/gracelife.svg" },
+  {
+    alt: "Grace Life Church Decatur",
+    href: "https://www.gracelifedecatur.org/",
+    src: "/gracelife.svg",
+    renderAsImage: true,
+  },
   { alt: "So You Sew Embroidery", src: "/SoYouSew.svg" },
   { alt: "True Chats", src: "/trueChatsLogo.svg" },
   { alt: "Mock", src: "/mock.svg" },
@@ -29,16 +35,25 @@ function BrandLogoPaperMark({
   alt,
   href,
   src,
+  renderAsImage,
 }: {
   alt: string;
   href?: string;
   src: string;
+  renderAsImage?: boolean;
 }) {
   const maskStyle = {
     "--logo-mask": `url("${src}")`,
   } as CSSProperties;
 
-  const mark = (
+  const mark = renderAsImage ? (
+    <img
+      alt={href ? "" : alt}
+      aria-hidden={href ? true : undefined}
+      className="brand-identities__logo-image"
+      src={src}
+    />
+  ) : (
     <div
       aria-hidden={Boolean(href)}
       aria-label={href ? undefined : alt}
@@ -77,8 +92,14 @@ export function BrandIdentitiesCarousel({ slides }: Props) {
   const items: ReactNode[] =
     slides && slides.length > 0
       ? [...slides]
-      : BRAND_LOGO_ENTRIES.map(({ alt, href, src }) => (
-          <BrandLogoPaperMark alt={alt} href={href} key={src} src={src} />
+      : BRAND_LOGO_ENTRIES.map(({ alt, href, renderAsImage, src }) => (
+          <BrandLogoPaperMark
+            alt={alt}
+            href={href}
+            key={src}
+            renderAsImage={renderAsImage}
+            src={src}
+          />
         ));
 
   const count = Math.max(items.length, 1);
