@@ -45,6 +45,19 @@ const experiences: Experience[] = [
     ],
   },
   {
+    role: "Worship Director & Youth Pastor",
+    company: "Currently: GraceLife Church",
+    location: "Previously: First Presbyterian PCA Troy",
+    dates: "Aug 2023 - Present",
+    category: "Ministry",
+    details: [
+      "Planning and leading <b>weekly worship practices and Sunday services</b>.",
+      "Managing all <b>audio/visual hardware and software</b> for the sanctuary.",
+      "Providing spiritual and theological mentorship to youth groups.",
+      "Designing and maintaining the church website.",
+    ],
+  },
+  {
     role: "Missionary",
     company: "Mission to the World",
     location: "Tokyo, Japan",
@@ -55,19 +68,6 @@ const experiences: Experience[] = [
       "Assisted in the management of <b>church worship services</b>.",
       "Hosted <b>multicultural networking events</b> designed to bridge national communities.",
       "Studied Japanese through immersive language coursework.",
-    ],
-  },
-  {
-    role: "Worship Director & Youth Pastor",
-    company: "First Presbyterian Church",
-    location: "Troy, AL",
-    dates: "Aug 2023 - Jun 2024",
-    category: "Ministry",
-    details: [
-      "Planned and led <b>weekly worship practices and Sunday services</b>.",
-      "Managed all <b>audio/visual hardware and software</b> for the sanctuary.",
-      "Provided spiritual and theological mentorship to youth groups.",
-      "Designed and maintained the church website.",
     ],
   },
   {
