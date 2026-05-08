@@ -752,11 +752,20 @@ main {
 
 .brand-identities__logo-link {
   align-self: center;
-  display: block;
+  display: grid;
+  justify-items: center;
   justify-self: center;
   line-height: 0;
   max-width: 100%;
   text-decoration: none;
+  width: 100%;
+}
+
+.brand-identities__logo-tip-target {
+  align-items: center;
+  display: grid;
+  justify-items: center;
+  width: 100%;
 }
 
 .brand-identities__logo-link:focus-visible {

@@ -3,11 +3,14 @@
 import {
   type CSSProperties,
   type KeyboardEventHandler,
+  type MouseEvent,
   type ReactNode,
   useCallback,
+  useEffect,
   useId,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 const ACCENTS = ["#FFC000", "#5aa0e6", "#74AB86", "#ff765f"] as const;
 
@@ -17,6 +20,7 @@ const BRAND_LOGO_ENTRIES: readonly {
   readonly href?: string;
   readonly src: string;
   readonly renderAsImage?: boolean;
+  readonly tooltipText?: string;
 }[] = [
   { alt: "Broken Bean Coffee Roasters", src: "/brokenBean.svg" },
   {
@@ -24,10 +28,21 @@ const BRAND_LOGO_ENTRIES: readonly {
     href: "https://www.gracelifedecatur.org/",
     src: "/gracelife.svg",
     renderAsImage: true,
+    tooltipText: "I made this site!",
   },
   { alt: "So You Sew Embroidery", src: "/SoYouSew.svg" },
-  { alt: "True Chats", src: "/trueChatsLogo.svg" },
-  { alt: "Mock", src: "/mock.svg" },
+  {
+    alt: "True Chats",
+    href: "https://chats.trueos.dev",
+    src: "/trueChatsLogo.svg",
+    tooltipText: "I made this site!",
+  },
+  {
+    alt: "Mock",
+    href: "https://mockitsolutions.com",
+    src: "/mock.svg",
+    tooltipText: "I made this site!",
+  },
   { alt: "Native", src: "/native.svg" },
 ];
 
@@ -36,11 +51,17 @@ function BrandLogoPaperMark({
   href,
   src,
   renderAsImage,
+  tooltipText,
+  onTooltipMove,
+  onTooltipLeave,
 }: {
   alt: string;
   href?: string;
   src: string;
   renderAsImage?: boolean;
+  tooltipText?: string;
+  onTooltipMove?: (e: MouseEvent<HTMLElement>, text: string) => void;
+  onTooltipLeave?: () => void;
 }) {
   const maskStyle = {
     "--logo-mask": `url("${src}")`,
@@ -63,6 +84,20 @@ function BrandLogoPaperMark({
     />
   );
 
+  const tooltipHandlers = tooltipText
+    ? {
+        onMouseEnter: (e: MouseEvent<HTMLElement>) => onTooltipMove?.(e, tooltipText),
+        onMouseMove: (e: MouseEvent<HTMLElement>) => onTooltipMove?.(e, tooltipText),
+        onMouseLeave: () => onTooltipLeave?.(),
+      }
+    : undefined;
+
+  const wrappedMark = (
+    <div className="brand-identities__logo-tip-target" {...tooltipHandlers}>
+      {mark}
+    </div>
+  );
+
   if (href) {
     return (
       <a
@@ -72,12 +107,12 @@ function BrandLogoPaperMark({
         rel="noopener noreferrer"
         target="_blank"
       >
-        {mark}
+        {wrappedMark}
       </a>
     );
   }
 
-  return mark;
+  return wrappedMark;
 }
 
 type Props = {
@@ -88,22 +123,47 @@ type Props = {
 export function BrandIdentitiesCarousel({ slides }: Props) {
   const headingId = useId();
   const viewportId = useId();
+  const [index, setIndex] = useState(0);
+  const [followTip, setFollowTip] = useState<{
+    readonly x: number;
+    readonly y: number;
+    readonly text: string;
+  } | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    setFollowTip(null);
+  }, [index]);
+
+  const moveFollowTip = useCallback((e: MouseEvent<HTMLElement>, text: string) => {
+    setFollowTip({ x: e.clientX, y: e.clientY, text });
+  }, []);
+
+  const clearFollowTip = useCallback(() => {
+    setFollowTip(null);
+  }, []);
 
   const items: ReactNode[] =
     slides && slides.length > 0
       ? [...slides]
-      : BRAND_LOGO_ENTRIES.map(({ alt, href, renderAsImage, src }) => (
+      : BRAND_LOGO_ENTRIES.map(({ alt, href, renderAsImage, src, tooltipText }) => (
           <BrandLogoPaperMark
             alt={alt}
             href={href}
             key={src}
+            onTooltipLeave={clearFollowTip}
+            onTooltipMove={moveFollowTip}
             renderAsImage={renderAsImage}
             src={src}
+            tooltipText={tooltipText}
           />
         ));
 
   const count = Math.max(items.length, 1);
-  const [index, setIndex] = useState(0);
   const active = ((index % count) + count) % count;
 
   const go = useCallback(
@@ -136,78 +196,93 @@ export function BrandIdentitiesCarousel({ slides }: Props) {
   } as CSSProperties;
 
   return (
-    <section
-      aria-labelledby={headingId}
-      className="section-shell brand-identities"
-      id="brand-identities"
-      style={sectionStyle}
-    >
-      <header className="brand-identities__header">
-        <p className="kicker">Brand identities I've Designed</p>
-      </header>
-
-      <div
-        aria-label="Brand logo slides"
-        aria-roledescription="carousel"
-        className="brand-identities__carousel"
-        role="region"
-        onKeyDown={onCarouselKeyDown}
-        tabIndex={0}
+    <>
+      <section
+        aria-labelledby={headingId}
+        className="section-shell brand-identities"
+        id="brand-identities"
+        style={sectionStyle}
       >
-        <button
-          aria-controls={viewportId}
-          aria-label="Previous slide"
-          className="brand-identities__nav brand-identities__nav--prev"
-          type="button"
-          onClick={() => go(-1)}
-        >
-          ‹
-        </button>
+        <header className="brand-identities__header">
+          <p className="kicker">Brand identities I've Designed</p>
+        </header>
 
         <div
-          aria-live="polite"
-          className="brand-identities__viewport"
-          id={viewportId}
+          aria-label="Brand logo slides"
+          aria-roledescription="carousel"
+          className="brand-identities__carousel"
+          role="region"
+          onKeyDown={onCarouselKeyDown}
+          tabIndex={0}
         >
-          <div
-            className="brand-identities__rail"
-            style={{ transform: `translateX(-${active * 100}%)` }}
+          <button
+            aria-controls={viewportId}
+            aria-label="Previous slide"
+            className="brand-identities__nav brand-identities__nav--prev"
+            type="button"
+            onClick={() => go(-1)}
           >
-            {items.map((node, slideIndex) => (
-              <div
-                aria-hidden={slideIndex !== active}
-                className={`brand-identities__slide${slideIndex === active ? " is-active" : ""}`}
-                key={slideIndex}
-              >
-                {node}
-              </div>
-            ))}
+            ‹
+          </button>
+
+          <div
+            aria-live="polite"
+            className="brand-identities__viewport"
+            id={viewportId}
+          >
+            <div
+              className="brand-identities__rail"
+              style={{ transform: `translateX(-${active * 100}%)` }}
+            >
+              {items.map((node, slideIndex) => (
+                <div
+                  aria-hidden={slideIndex !== active}
+                  className={`brand-identities__slide${slideIndex === active ? " is-active" : ""}`}
+                  key={slideIndex}
+                >
+                  {node}
+                </div>
+              ))}
+            </div>
           </div>
+
+          <button
+            aria-controls={viewportId}
+            aria-label="Next slide"
+            className="brand-identities__nav brand-identities__nav--next"
+            type="button"
+            onClick={() => go(1)}
+          >
+            ›
+          </button>
         </div>
 
-        <button
-          aria-controls={viewportId}
-          aria-label="Next slide"
-          className="brand-identities__nav brand-identities__nav--next"
-          type="button"
-          onClick={() => go(1)}
-        >
-          ›
-        </button>
-      </div>
+        <nav aria-label="Slide indicators" className="brand-identities__dots">
+          {items.map((_, dotIndex) => (
+            <button
+              aria-current={dotIndex === active ? "true" : undefined}
+              aria-label={`Go to slide ${dotIndex + 1}`}
+              className={`brand-identities__dot${dotIndex === active ? " is-active" : ""}`}
+              key={dotIndex}
+              type="button"
+              onClick={() => setIndex(dotIndex)}
+            />
+          ))}
+        </nav>
+      </section>
 
-      <nav aria-label="Slide indicators" className="brand-identities__dots">
-        {items.map((_, dotIndex) => (
-          <button
-            aria-current={dotIndex === active ? "true" : undefined}
-            aria-label={`Go to slide ${dotIndex + 1}`}
-            className={`brand-identities__dot${dotIndex === active ? " is-active" : ""}`}
-            key={dotIndex}
-            type="button"
-            onClick={() => setIndex(dotIndex)}
-          />
-        ))}
-      </nav>
-    </section>
+      {mounted &&
+        followTip !== null &&
+        createPortal(
+          <span
+            aria-hidden
+            className="portfolio-tri-follow-tooltip"
+            style={{ left: followTip.x, top: followTip.y }}
+          >
+            {followTip.text}
+          </span>,
+          document.body,
+        )}
+    </>
   );
 }
