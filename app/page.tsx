@@ -289,8 +289,7 @@ export default function Home() {
           <p className="kicker">Connect.</p>
           <h2>Let&apos;s build something <b>memorable</b>.</h2>
           <div className="contact-links">
-            <a href="mailto:jlyons564@gmail.com">jlyons564@gmail.com</a>
-            <a href="tel:+12562143141">(256) 214-3141</a>
+            <a href="mailto:jlyons564@gmail.com">Email</a>
             <a href="https://linkedin.com/in/jackmlyons">LinkedIn</a>
           </div>
         </article>
